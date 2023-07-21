@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_094422) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_100047) do
+  create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false, comment: "プロジェクトタイトル"
+    t.string "catch_copies", null: false, comment: "キャッチコピー"
+    t.integer "goal_amount", null: false, comment: "目標金額"
+    t.datetime "start_date", null: false, comment: "開始日"
+    t.datetime "end_date", null: false, comment: "終了日"
+    t.text "project_images", null: false, comment: "プロジェクト画像 "
+    t.text "description", null: false, comment: "プロジェクト説明"
+    t.boolean "is_published", default: false, null: false, comment: "公開/非公開のフラグ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
@@ -38,4 +53,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_094422) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "projects", "users"
 end
