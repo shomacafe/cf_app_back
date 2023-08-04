@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_100047) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_100852) do
   create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false, comment: "プロジェクトタイトル"
@@ -24,6 +24,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_100047) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_projects_on_user_id"
+  end
+
+  create_table "returns", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.string "name", null: false, comment: "リターン名"
+    t.integer "price", null: false, comment: "リターンの価格"
+    t.string "return_image", null: false, comment: "リターン画像"
+    t.text "description", null: false, comment: "リターンの説明"
+    t.integer "stock_count", default: 0, null: false, comment: "リターンの在庫数"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_returns_on_project_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -54,4 +66,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_100047) do
   end
 
   add_foreign_key "projects", "users"
+  add_foreign_key "returns", "projects"
 end
