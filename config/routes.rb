@@ -8,9 +8,13 @@ Rails.application.routes.draw do
         resources :sessions, only: [:index]
       end
       resources :projects, only: [:index, :show, :create, :update, :destroy] do
+        collection do
+          get :index_by_user
+        end
         resources :returns, only: [:index, :show, :create, :update]
       end
       resources :users, only: [:index, :show, :update]
+      resources :upload_images, only: [:create]
     end
   end
 end
