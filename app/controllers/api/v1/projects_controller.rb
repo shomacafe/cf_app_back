@@ -27,6 +27,8 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def update
+    @project = current_api_v1_user.projects.find(params[:id])
+
     if @project.update(project_params)
       render json: @project
     else

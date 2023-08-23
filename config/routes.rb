@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         resources :returns, only: [:index, :show, :create, :update]
       end
       resources :users, only: [:index, :show, :update]
-      resources :upload_images, only: [:create]
+      post 'upload_image', to: 'uploads#upload_image'
     end
   end
 end
