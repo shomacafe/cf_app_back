@@ -10,7 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_100852) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_080751) do
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "projects", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false, comment: "プロジェクトタイトル"
@@ -18,11 +46,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_100852) do
     t.integer "goal_amount", null: false, comment: "目標金額"
     t.datetime "start_date", null: false, comment: "開始日"
     t.datetime "end_date", null: false, comment: "終了日"
-    t.text "project_images", null: false, comment: "プロジェクト画像 "
     t.text "description", null: false, comment: "プロジェクト説明"
     t.boolean "is_published", default: false, null: false, comment: "公開/非公開のフラグ"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "project_images"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -30,12 +58,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_100852) do
     t.bigint "project_id", null: false
     t.string "name", null: false, comment: "リターン名"
     t.integer "price", null: false, comment: "リターンの価格"
-    t.string "return_image", null: false, comment: "リターン画像"
     t.text "description", null: false, comment: "リターンの説明"
     t.integer "stock_count", default: 0, null: false, comment: "リターンの在庫数"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "return_image"
     t.index ["project_id"], name: "index_returns_on_project_id"
+  end
+
+  create_table "rich_text_images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -65,6 +99,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_100852) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "projects", "users"
   add_foreign_key "returns", "projects"
 end
