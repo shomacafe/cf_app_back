@@ -1,9 +1,14 @@
 class Api::V1::ProjectsController < ApplicationController
-  before_action :authenticate_api_v1_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_api_v1_user!, only: [:create, :update, :destroy, :index_by_user]
   before_action :find_project, only: [:show, :update, :destroy]
 
   def index
     @projects = Project.all
+    render json: @projects, include: :returns
+  end
+
+  def index_by_user
+    @projects = current_api_v1_user.projects
     render json: @projects, include: :returns
   end
 
@@ -22,6 +27,8 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def update
+    @project = current_api_v1_user.projects.find(params[:id])
+
     if @project.update(project_params)
       render json: @project
     else
