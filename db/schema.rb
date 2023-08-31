@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_23_080751) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_25_091855) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,6 +54,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_080751) do
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
+  create_table "purchases", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "return_id", null: false
+    t.bigint "project_id", null: false
+    t.integer "quantity", null: false, comment: "リターンの購入数"
+    t.integer "amount", null: false, comment: "リターンの購入額"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_purchases_on_project_id"
+    t.index ["return_id"], name: "index_purchases_on_return_id"
+    t.index ["user_id"], name: "index_purchases_on_user_id"
+  end
+
   create_table "returns", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "project_id", null: false
     t.string "name", null: false, comment: "リターン名"
@@ -63,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_080751) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "return_image"
+    t.integer "supporter_count", default: 0, comment: "リターンのサポーター数"
     t.index ["project_id"], name: "index_returns_on_project_id"
   end
 
@@ -102,5 +116,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_080751) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "projects", "users"
+  add_foreign_key "purchases", "projects"
+  add_foreign_key "purchases", "returns"
+  add_foreign_key "purchases", "users"
   add_foreign_key "returns", "projects"
 end

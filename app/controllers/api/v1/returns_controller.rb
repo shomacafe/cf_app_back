@@ -50,7 +50,7 @@ class Api::V1::ReturnsController < ApplicationController
 
   def return_params
     params.require(:return).map do |param|
-      param.permit(:id, :project_id, :name, :price, :return_image, :description, :stock_count, :_destroy)
+      param.permit(:id, :project_id, :name, :price, :return_image, :description, :stock_count, :supporter_count, :_destroy)
     end
   end
 end
