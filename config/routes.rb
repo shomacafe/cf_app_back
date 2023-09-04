@@ -10,11 +10,13 @@ Rails.application.routes.draw do
       resources :projects, only: [:index, :show, :create, :update, :destroy] do
         collection do
           get :index_by_user
+          get :recommended
         end
         resources :returns, only: [:index, :show, :create, :update]
       end
       resources :users, only: [:index, :show, :update]
       post 'upload_rich_text_image', to: 'rich_text_images#upload_rich_text_image'
+      resources :purchases, only: [:index, :create]
     end
   end
 end
