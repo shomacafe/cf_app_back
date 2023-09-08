@@ -52,3 +52,4 @@ gem "devise_token_auth"
 gem "carrierwave"
 gem "fog-aws"
 gem "dotenv-rails"
+gem 'devise-i18n'
