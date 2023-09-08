@@ -48,7 +48,7 @@ class Api::V1::ProjectsController < ApplicationController
       project: @project,
       total_amount: total_amount,
       support_count: support_count,
-      user: @project.user.as_json(only: [:name]) #TODO: プロフィールやアイコンも追加
+      user: @project.user.as_json(only: [:name, :profile, :user_image])
     }, include: :returns
   end
 
