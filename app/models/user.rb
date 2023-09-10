@@ -18,7 +18,8 @@ class User < ActiveRecord::Base
 
   def self.guest
     find_or_create_by!(email: "guest@example.com") do |user|
-      user.password = SecureRandom.urlsafe_base64
+      user.password = 'guestpassword'
+      user.password_confirmation = 'guestpassword'
       user.name = 'ゲストユーザー'
       user.profile = 'ゲストユーザーです。よろしくお願いします。'
     end
